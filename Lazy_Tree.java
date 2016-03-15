@@ -41,19 +41,41 @@ public class Lazy_Tree{
 		lock = new ReentrantLock();
 	}
 	public void display(){
+		Queue<Tree_Entry> siblings = new LinkedList<Tree_Entry>();
+		
 		Tree_Entry p = this.root;
 		
 		System.out.println(">>>>>>>>>>>>>>>>Displaying BEGIN<<<<<<<<<<<<<");
+		System.out.println("LCRS_Tree->root:");
 		int nNodes = 0;
 		while(p!=null)
 		{
 			System.out.print("[k:"+p.getKey().toString()+",M:"+p.isMarked()+"]->");
 			nNodes++;
-			p = p.childList;
+			siblings.add(p);
+			p = p.next;
 		}
 		System.out.println("null");
 		
+		
+		while(!siblings.isEmpty())
+		{
+			Tree_Entry parent = siblings.remove();
+			System.out.println("[k:"+parent.getKey().toString()+"]->childList:");
+			Tree_Entry child = parent.childList;
+			while(child!=null)
+			{
+				System.out.print("[k:"+child.getKey().toString()+",M:"+child.isMarked()+"]->");
+				nNodes++;
+				siblings.add(child);
+				child = child.next;
+			}
+			System.out.println("null");
+		
+		}
+		
 		System.out.println(">>>>>>>>>>>>>>>>Displaying End(nNodes:"+nNodes+"<<<<<<<<<<<<<");
+		
 	}
 	
 	public boolean Insert(Key k)
